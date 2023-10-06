@@ -116,7 +116,7 @@ const CommentModal = ({
 
 CommentModal.propTypes = {
   onClose: PropTypes.func,
-  isOpen: PropTypes.func,
+  isOpen: PropTypes.bool,
   handlePostLike: PropTypes.func,
   isSaved: PropTypes.bool,
   handleSavePost: PropTypes.func,

@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
-import HomePage from "../homePage/HomePage";
 import Sidebar from "~/components/sidebar/Sidebar";
-import { ProfilePage } from "..";
+import { HomePage, ProfilePage } from "~/pages";
+import StoryPage from "~/pages/storyPage/StoryPage";
 
 const Router = () => {
   return (
@@ -13,6 +13,7 @@ const Router = () => {
         <Routes>
           <Route path="/" element={<HomePage />}></Route>
           <Route path="/username" element={<ProfilePage />} />
+          <Route path="/story" element={<StoryPage />} />
         </Routes>
       </div>
     </div>

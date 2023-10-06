@@ -3,6 +3,8 @@ import PostCard from "~/components/post/PostCard";
 import StoryCircle from "~/components/story/StoryCircle";
 
 const HomePage = () => {
+  // const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <div>
       <div className="mt-10 flex w-[100%] justify-center">
@@ -18,7 +20,7 @@ const HomePage = () => {
             ))}
           </div>
         </div>
-        <div className="w-[35%]">
+        <div className="w-[27%]">
           <HomeRight />
         </div>
       </div>
