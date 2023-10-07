@@ -1,10 +1,12 @@
 package vn.duck.be_instagram.entities;
 
+
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import vn.duck.be_instagram.services.dto.UserDto;
 
-import javax.xml.stream.events.Comment;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -12,19 +14,21 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "t_post")
-@NoArgsConstructor
+@Table(name = "posts")
 @AllArgsConstructor
-@Getter
-@Setter
-@ToString
+@NoArgsConstructor
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Integer id;
+    @Column(name = "caption")
     private String caption;
+    @Column(name = "image")
+    private String image;
+    @Column(name = "location")
     private String location;
-    private LocalDateTime createAt;
+    @Column(name = "createAt")
+    private LocalDateTime createdAt;
 
     @Embedded
     @AttributeOverrides({
@@ -33,7 +37,12 @@ public class Post {
     })
     private UserDto user;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Comment> comments = new ArrayList<Comment>();
-    private Set<UserDto> likedbyUsers = new HashSet<>();
+    @OneToMany
+    private List<Comment> comments = new ArrayList<>();
+
+    @Embedded
+    @ElementCollection
+    @JoinTable(name = "likedByUsers", joinColumns = @JoinColumn(name = "user_id"))
+    private Set<UserDto> likedByUsers = new HashSet<UserDto>();
+
 }

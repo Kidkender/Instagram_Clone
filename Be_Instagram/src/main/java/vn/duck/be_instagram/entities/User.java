@@ -5,48 +5,53 @@ import jakarta.persistence.*;
 import lombok.*;
 import vn.duck.be_instagram.services.dto.UserDto;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "t_user")
-@Getter
-@Setter
-@ToString
-@Builder
+@Getter @Setter
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor @ToString
+@Table(name = "t_users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
+//    @Column(name = "user_name")
     private String userName;
+//    @Column(name = "name")
     private String name;
+//    @Column(name = "email")
     private String email;
+//    @Column(name = "mobile")
     private String mobile;
+//    @Column(name = "website")
     private String website;
+//    @Column(name = "bio")
     private String bio;
+//    @Column(name = "gender")
     private String gender;
+//    @Column(name = "image")
     private String image;
 
+//    @Column(name = "password")
     private String password;
 
+    @Embedded
+    @ElementCollection
     private Set<UserDto> follower = new HashSet<UserDto>();
+    @Embedded
+    @ElementCollection
     private Set<UserDto> following = new HashSet<UserDto>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Story> stories = new ArrayList<>();
 
-    private List<Post> savePost = new ArrayList<>();
+    @ManyToMany
+    private List<Post> savedPost = new ArrayList<>();
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(userName, user.userName) && Objects.equals(name, user.name) && Objects.equals(email, user.email) && Objects.equals(mobile, user.mobile) && Objects.equals(website, user.website) && Objects.equals(bio, user.bio) && Objects.equals(gender, user.gender) && Objects.equals(image, user.image) && Objects.equals(password, user.password) && Objects.equals(follower, user.follower) && Objects.equals(following, user.following) && Objects.equals(stories, user.stories) && Objects.equals(savePost, user.savePost);
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, userName, name, email, mobile, website, bio, gender, image, password, follower, following, stories, savePost);
-    }
 }

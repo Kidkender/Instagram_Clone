@@ -1,23 +1,23 @@
 package vn.duck.be_instagram.entities;
 
+
 import jakarta.persistence.*;
 import lombok.*;
 import vn.duck.be_instagram.services.dto.UserDto;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "t_comment")
-@Getter
-@Setter
-@AllArgsConstructor
+@Table(name = "t_comments")
+@Getter @Setter @ToString
 @NoArgsConstructor
-@ToString @EqualsAndHashCode
+@AllArgsConstructor
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Integer id;
 
     @Embedded
     @AttributeOverrides({
@@ -25,10 +25,15 @@ public class Comment {
             @AttributeOverride(name = "email", column = @Column(name = "user_email"))
     })
     private UserDto user;
-
+    @Column(name = "content")
     private String content;
+
+
     @Embedded
     @ElementCollection
-    @JoinTable(name = "likedByUsers", joinColumns = @JoinColumn(name = "user_id"))
-    private Set<UserDto> likedbyUsers = new HashSet<UserDto>();
+    private Set<UserDto> likedByUsers = new HashSet<UserDto>();
+    @Column(name = "createAt")
+    private LocalDateTime createdAt;
+
+
 }
