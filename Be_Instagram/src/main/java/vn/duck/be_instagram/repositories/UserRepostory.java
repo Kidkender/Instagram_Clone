@@ -17,8 +17,6 @@ public interface UserRepostory extends JpaRepository<User,Long> {
 
     @Modifying
     @Query("SELECT u from User  u WHERE u.id in :t_users")
-//    @Query("UPDATE User SET blockedCount = :blockedCount, blockedDate = :blockedDate WHERE id = :userId")
-
     public List<User> findAllUsersByIds(@Param("t_users")List<Long> userIds);
 
     @Modifying

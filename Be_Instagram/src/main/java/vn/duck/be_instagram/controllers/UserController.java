@@ -11,6 +11,8 @@ import vn.duck.be_instagram.services.UserService;
 import vn.duck.be_instagram.services.dto.response.MessageResponse;
 
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -50,10 +52,11 @@ public class UserController {
         return null;
     }
 
-    @GetMapping("m/{userIds}")
-    public ResponseEntity<List<User>> findUserByIdsHandler(@PathVariable List<Long> userIds) throws UserException {
+    @GetMapping("/m/{userIds}")
+    public ResponseEntity<List<User>> findUserByUserIdsHandler(@PathVariable List<Long> userIds) throws UserException{
+
         List<User> users = userService.findUserByIds(userIds);
-        return new ResponseEntity<List<User>>(users, HttpStatus.OK);
+        return new ResponseEntity<List<User>>(users,HttpStatus.OK);
     }
 
     @GetMapping("search")

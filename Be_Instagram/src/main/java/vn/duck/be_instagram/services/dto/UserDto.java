@@ -7,7 +7,7 @@ import lombok.Data;
 public class UserDto {
 
 
-    private Integer id;
+    private Long id;
 
     private String username;
 
@@ -19,7 +19,8 @@ public class UserDto {
     private String userImage;
 
 
-    public UserDto(Integer id, String username, String email, String name, String userImage) {
+    public UserDto(Long id, String username, String email, String name,
+                   String userImage) {
         super();
         this.id = id;
         this.username = username;
@@ -34,12 +35,12 @@ public class UserDto {
     }
 
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -2,6 +2,7 @@ package vn.duck.be_instagram.services.implement;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import vn.duck.be_instagram.entities.User;
 import vn.duck.be_instagram.exceptions.UserException;
@@ -18,7 +19,8 @@ import java.util.Optional;
 public class UserImplement implements UserService {
     @Autowired
     private UserRepostory userRepostory;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Override
     public User registerUser(User user) throws UserException {
         Optional<User> isEmailExist = userRepostory.findByEmail(user.getEmail());
@@ -37,11 +39,11 @@ public class UserImplement implements UserService {
         User newUser = new User();
 
         newUser.setEmail(user.getEmail());
-        newUser.setPassword(user.getPassword());
-        newUser.setName(user.getName());
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        newUser.setUserName(user.getUserName());
         newUser.setName(user.getName());
 
-        return userRepostory.save(new User());
+        return userRepostory.save(newUser);
     }
 
     @Override
@@ -66,7 +68,7 @@ public class UserImplement implements UserService {
         {
             return  user.get();
         }
-        throw new UserException("user not exist with username" + username);
+        throw new UserException("user not exist with username " + username);
     }
 
     @Override
@@ -126,7 +128,6 @@ public class UserImplement implements UserService {
 
     @Override
     public List<User> findUserByIds(List<Long> userIds) throws UserException {
-
         List<User> users = userRepostory.findAllUsersByIds(userIds);
         return users;
     }
