@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import vn.duck.be_instagram.entities.User;
 import vn.duck.be_instagram.exceptions.UserException;
 import vn.duck.be_instagram.repositories.UserRepostory;
+import vn.duck.be_instagram.security.JwtTokenClaims;
+import vn.duck.be_instagram.security.JwtTokenProvider;
 import vn.duck.be_instagram.services.UserService;
 import vn.duck.be_instagram.services.dto.UserDto;
 
@@ -16,11 +18,14 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 
-public class UserImplement implements UserService {
+public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepostory userRepostory;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
     @Override
     public User registerUser(User user) throws UserException {
         Optional<User> isEmailExist = userRepostory.findByEmail(user.getEmail());
@@ -58,15 +63,27 @@ public class UserImplement implements UserService {
 
     @Override
     public User findUserProfile(String token) throws UserException {
-        return null;
+        // TODO Auto-generated method stub
+
+        token = token.substring(7);
+
+        JwtTokenClaims tokenClaims = jwtTokenProvider.getClaimsFromToken(token);
+        String email = tokenClaims.getUserName();
+
+        Optional<User> opt = userRepostory.findByEmail(email);
+
+        if (opt.isPresent()) {
+            return opt.get();
+        }
+
+        throw new UserException("invalid token...");
     }
 
     @Override
     public User findUserByUsername(String username) throws UserException {
-        Optional<User> user=userRepostory.findByUserName(username);
-        if (user.isPresent())
-        {
-            return  user.get();
+        Optional<User> user = userRepostory.findByUserName(username);
+        if (user.isPresent()) {
+            return user.get();
         }
         throw new UserException("user not exist with username " + username);
     }
@@ -168,7 +185,7 @@ public class UserImplement implements UserService {
             existingUser.setImage(updateUser.getImage());
         }
         if (updateUser.getId() != null) {
-            existingUser.setId(updateUser.getId());
+            return userRepostory.save(existingUser);
         }
         throw new UserException("You cant update this user");
     }

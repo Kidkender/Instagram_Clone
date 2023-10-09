@@ -11,8 +11,6 @@ import vn.duck.be_instagram.services.UserService;
 import vn.duck.be_instagram.services.dto.response.MessageResponse;
 
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/user")
@@ -34,42 +32,50 @@ public class UserController {
     }
 
     @PutMapping("follow/{followUserId}")
-    public ResponseEntity<MessageResponse> followUserHandler(@PathVariable Long followUserId) throws UserException {
-
-//MessageResponse res= userService.followUser()
-
-        return null;
+    public ResponseEntity<MessageResponse> followUserHandler(@RequestHeader(
+            "Authorization") String token,
+                                                             @PathVariable Long followUserId) throws UserException {
+        User user = userService.findUserProfile(token);
+        String message = userService.followUser(user.getId(), followUserId);
+        MessageResponse res = new MessageResponse(message);
+         return new ResponseEntity<MessageResponse>(res, HttpStatus.OK);
     }
 
     @PutMapping("unfollow/{userId}")
-    public ResponseEntity<MessageResponse> unFollowUserHandler(@PathVariable Long userId) throws UserException {
-        return null;
+    public ResponseEntity<MessageResponse> unFollowUserHandler(@RequestHeader("Authorization") String token,
+                                                               @PathVariable Long userId) throws UserException {
+        User user = userService.findUserProfile(token);
+        String message = userService.unFollowUser(user.getId(), userId);
+        MessageResponse res = new MessageResponse(message);
+
+        return new ResponseEntity<MessageResponse>(res, HttpStatus.OK);
     }
 
-    @PutMapping("req")
-    public ResponseEntity<MessageResponse> findUserProfileHandler(@RequestHeader("Authorization") String token) throws UserException {
-
-        return null;
+    @GetMapping("/myprofile")
+    public ResponseEntity<User> findUserProfileHandler(@RequestHeader(
+            "Authorization") String token) throws UserException {
+        User user = userService.findUserProfile(token);
+        return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
     @GetMapping("/m/{userIds}")
-    public ResponseEntity<List<User>> findUserByUserIdsHandler(@PathVariable List<Long> userIds) throws UserException{
+    public ResponseEntity<List<User>> findUserByUserIdsHandler(@PathVariable List<Long> userIds) throws UserException {
 
         List<User> users = userService.findUserByIds(userIds);
-        return new ResponseEntity<List<User>>(users,HttpStatus.OK);
+        return new ResponseEntity<List<User>>(users, HttpStatus.OK);
     }
 
     @GetMapping("search")
     public ResponseEntity<List<User>> searchUserHandler(@RequestParam("q") String query) throws UserException {
-        List<User> users =userService.searchUser(query);
-        return new ResponseEntity<List<User>>(users,HttpStatus.OK);
+        List<User> users = userService.searchUser(query);
+        return new ResponseEntity<List<User>>(users, HttpStatus.OK);
     }
 
-     public ResponseEntity<User> updateUserHandler(@RequestHeader(
-             "Authorization") String token,@RequestBody User user) throws UserException {
-//        User reqUser
-//        User updateUser=userService.updateUserDetails(user,user);
-
-         return null;
-     }
+    @PutMapping("/account/edit")
+    public ResponseEntity<User> updateUserHandler(@RequestHeader(
+            "Authorization") String token, @RequestBody User user) throws UserException {
+        User reqUser = userService.findUserProfile(token);
+        User updatedUser = userService.updateUserDetails(user, reqUser);
+        return new ResponseEntity<User>(updatedUser, HttpStatus.OK);
+    }
 }
