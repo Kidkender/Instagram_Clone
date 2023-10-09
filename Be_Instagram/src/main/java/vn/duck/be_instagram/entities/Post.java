@@ -2,9 +2,7 @@ package vn.duck.be_instagram.entities;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import vn.duck.be_instagram.services.dto.UserDto;
 
 import java.time.LocalDateTime;
@@ -17,10 +15,12 @@ import java.util.Set;
 @Table(name = "posts")
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter @Setter
+@ToString
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @Column(name = "caption")
     private String caption;
     @Column(name = "image")
