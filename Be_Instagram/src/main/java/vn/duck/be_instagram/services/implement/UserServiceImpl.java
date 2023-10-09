@@ -185,7 +185,7 @@ public class UserServiceImpl implements UserService {
             existingUser.setImage(updateUser.getImage());
         }
         if (updateUser.getId() != null) {
-            existingUser.setId(updateUser.getId());
+            return userRepostory.save(existingUser);
         }
         throw new UserException("You cant update this user");
     }
