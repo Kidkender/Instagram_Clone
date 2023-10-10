@@ -63,7 +63,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserProfile(String token) throws UserException {
-        // TODO Auto-generated method stub
 
         token = token.substring(7);
 

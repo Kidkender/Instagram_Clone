@@ -24,8 +24,6 @@ public class JwtTokenValidationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        // TODO Auto-generated method stub
-
         String jwt = request.getHeader(SercurityContext.HEADER);
 
         if (jwt != null) {
@@ -40,11 +38,11 @@ public class JwtTokenValidationFilter extends OncePerRequestFilter {
 
                 String user = String.valueOf(claims.get("username"));
 
-                String authorities = (String)claims.get("authorities");
+                String authorities = (String) claims.get("authorities");
 
                 List<GrantedAuthority> auths = AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
 
-                Authentication auth = new UsernamePasswordAuthenticationToken(user ,null, auths);
+                Authentication auth = new UsernamePasswordAuthenticationToken(user, null, auths);
 
                 SecurityContextHolder.getContext().setAuthentication(auth);
             } catch (Exception e) {

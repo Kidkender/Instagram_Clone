@@ -40,8 +40,6 @@ public class JwtTokenGeneratorFilter extends OncePerRequestFilter {
                     .signWith(key).compact();
 
             response.setHeader(SercurityContext.HEADER, jwt);
-
-
         }
         filterChain.doFilter(request, response);
     }
