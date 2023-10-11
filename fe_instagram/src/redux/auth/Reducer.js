@@ -1,11 +1,10 @@
 import { SIGN_IN, SIGN_UP } from "./ActionType";
 
-const inititalValues = {
+const initialValue = {
+  signup: null,
   signin: null,
-  Singup: null,
 };
-
-export const AuthReducer = (store = inititalValues, { type, payload }) => {
+export const AuthReducer = (store = initialValue, { type, payload }) => {
   if (type === SIGN_IN) {
     return { ...store, signin: payload };
   } else if (type === SIGN_UP) {

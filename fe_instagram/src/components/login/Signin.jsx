@@ -6,10 +6,12 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { Field, Form, Formik } from "formik";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { signinAction } from "~/redux/auth/Action";
+import { useEffect } from "react";
+import { getUserProfileAction } from "~/redux/user/Action";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -23,11 +25,27 @@ const Signin = () => {
   const initalValues = { email: "", password: "" };
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { user } = useSelector((store) => store);
+  console.log("user current :", user);
+  const jwt = localStorage.getItem("token");
 
-  const handleSubmit = (values) => {
+  const handleSubmit = (values, action) => {
     dispatch(signinAction(values));
-    console.log(values);
+    action.setSubmitting(false);
   };
+
+  useEffect(() => {
+    if (jwt) {
+      dispatch(getUserProfileAction(jwt));
+    }
+  }, [jwt]);
+
+  useEffect(() => {
+    console.log("data login : ", user);
+    if (user.reqUser?.data.userName) {
+      navigate(`/${user.reqUser.data.userName}`);
+    }
+  }, [jwt, user.reqUser]);
 
   const handleNavigate = () => navigate("/singup");
   return (

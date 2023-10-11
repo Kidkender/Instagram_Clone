@@ -52,6 +52,4 @@ public class User {
 
     @ManyToMany
     private List<Post> savedPost = new ArrayList<>();
-
-
 }

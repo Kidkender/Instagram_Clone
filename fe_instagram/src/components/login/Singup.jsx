@@ -4,13 +4,15 @@ import {
   FormControl,
   FormErrorMessage,
   Input,
+  useToast,
 } from "@chakra-ui/react";
 import { Field, Form, Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import "./Sinup.css";
-import { useDispatch } from "react-redux";
-import { signinAction, signupAction } from "~/redux/auth/Action";
+import { useDispatch, useSelector } from "react-redux";
+import { signupAction } from "~/redux/auth/Action";
+import { useEffect } from "react";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -22,14 +24,36 @@ const validationSchema = Yup.object().shape({
 });
 
 const Singup = () => {
-  const initalValues = { email: "", username: "", name: "", password: "" };
+  const initalValues = { email: "", userName: "", name: "", password: "" };
   const navigate = useNavigate();
+  const toast = useToast();
   const handleNavigate = () => navigate("/login");
   const dispatch = useDispatch();
-  const handleSubmit = (values) => {
-    console.log(values);
+  const { auth } = useSelector((store) => store);
+
+  console.log("Store signup ", auth.signup);
+
+  const handleSubmit = (values, actions) => {
+    console.log("values Submit ", values);
     dispatch(signupAction(values));
+    actions.setSubmitting(false);
   };
+
+  console.log("signup ", auth);
+
+  useEffect(() => {
+    console.log("data input ", auth.signup?.userName);
+    if (auth.signup?.userName) {
+      navigate("/login");
+      toast({
+        title: `Account created ${auth.signup?.userName}`,
+        description: "Created successfully...",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }, [auth.signup]);
 
   return (
     <div>
@@ -69,19 +93,19 @@ const Singup = () => {
                   )}
                 </Field>
 
-                <Field name="username">
+                <Field name="userName">
                   {({ field, form }) => (
                     <FormControl
-                      isInvalid={form.errors.username && form.touched.username}
+                      isInvalid={form.errors.userName && form.touched.userName}
                     >
                       <Input
                         className="w-full"
                         {...field}
-                        id="username"
-                        placeholder="Username"
+                        id="userName"
+                        placeholder="UserName"
                       ></Input>
                       <FormErrorMessage>
-                        {form.errors.username}
+                        {form.errors.userName}
                       </FormErrorMessage>
                     </FormControl>
                   )}

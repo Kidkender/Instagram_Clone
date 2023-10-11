@@ -4,7 +4,9 @@ package vn.duck.be_instagram.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,31 +19,33 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 
 @Configuration
+@EnableWebSecurity
 public class AppConfig {
     @Bean
     public SecurityFilterChain securityConfigration(HttpSecurity http) throws Exception {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().cors().configurationSource(request -> {
-                    CorsConfiguration corsConfig=new CorsConfiguration();
-                    corsConfig.applyPermitDefaultValues();
-                    corsConfig.addAllowedOrigin("*");
+                .and().cors()
+//                .configurationSource(request -> {
+//                    CorsConfiguration corsConfig = new CorsConfiguration();
+//                    corsConfig.applyPermitDefaultValues();
+//                    corsConfig.addAllowedOrigin("*");
 //                    corsConfig.addAllowedMethod(HttpMethod.OPTIONS);
 //                    corsConfig.addAllowedMethod(HttpMethod.GET);
 //                    corsConfig.addAllowedMethod(HttpMethod.POST);
 //                    corsConfig.addAllowedMethod(HttpMethod.PUT);
 //                    corsConfig.addAllowedMethod(HttpMethod.DELETE);
 //                    corsConfig.addAllowedHeader("Authorization");
-                    return corsConfig;
-                })
+//                    return corsConfig;
+//                })
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers(HttpMethod.POST,"/signup").permitAll()
+                .requestMatchers(HttpMethod.POST, "/signup").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterAfter(new JwtTokenGeneratorFilter(), BasicAuthenticationFilter.class)
                 .addFilterBefore(new JwtTokenValidationFilter(), BasicAuthenticationFilter.class)
                 .csrf().disable()
-                .formLogin().and().httpBasic();
+                .formLogin(Customizer.withDefaults()).httpBasic(Customizer.withDefaults());
         return http.build();
     }
 
@@ -53,7 +57,7 @@ public class AppConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setExposedHeaders(Arrays.asList("Authorization"));
