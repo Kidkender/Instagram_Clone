@@ -1,9 +1,13 @@
 package vn.duck.be_instagram.services.dto;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDto {
 
 
@@ -19,20 +23,20 @@ public class UserDto {
     private String userImage;
 
 
-    public UserDto(Long id, String username, String email, String name,
-                   String userImage) {
-        super();
-        this.id = id;
-        this.username = username;
-        this.email = email;
-        this.name = name;
-        this.userImage = userImage;
-    }
-
-
-    public UserDto() {
-        // TODO Auto-generated constructor stub
-    }
+//    public UserDto(Long id, String username, String email, String name,
+//                   String userImage) {
+//        super();
+//        this.id = id;
+//        this.username = username;
+//        this.email = email;
+//        this.name = name;
+//        this.userImage = userImage;
+//    }
+//
+//
+//    public UserDto() {
+//        // TODO Auto-generated constructor stub
+//    }
 
 
 //    public Long getId() {

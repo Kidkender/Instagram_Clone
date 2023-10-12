@@ -38,14 +38,14 @@ const Signin = () => {
     if (jwt) {
       dispatch(getUserProfileAction(jwt));
     }
-  }, [jwt]);
+  }, [dispatch, jwt]);
 
   useEffect(() => {
     console.log("data login : ", user);
     if (user.reqUser?.data.userName) {
       navigate(`/${user.reqUser.data.userName}`);
     }
-  }, [jwt, user.reqUser]);
+  }, [jwt, navigate, user, user.reqUser]);
 
   const handleNavigate = () => navigate("/singup");
   return (
