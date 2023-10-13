@@ -38,7 +38,7 @@ public class UserController {
         User user = userService.findUserProfile(token);
         String message = userService.followUser(user.getId(), followUserId);
         MessageResponse res = new MessageResponse(message);
-         return new ResponseEntity<MessageResponse>(res, HttpStatus.OK);
+        return new ResponseEntity<MessageResponse>(res, HttpStatus.OK);
     }
 
     @PutMapping("unfollow/{userId}")

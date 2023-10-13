@@ -1,0 +1,19 @@
+.mobileWallpaper {
+  background-image: url("~/assets/image/screenshot3.png");
+  animation: changeBg 8s infinite;
+}
+
+@keyframes changeBg {
+  0% {
+    background-image: url("~/assets/image/screenshot1.png");
+  }
+  25% {
+    background-image: url("~/assets/image/screenshot2.png");
+  }
+  50% {
+    background-image: url("~/assets/image/screenshot4.png");
+  }
+  75% {
+    background-image: url("~/assets/image/screenshot3.png");
+  }
+}
