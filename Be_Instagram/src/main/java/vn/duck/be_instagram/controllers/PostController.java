@@ -78,7 +78,6 @@ public class PostController {
         User user = userService.findUserProfile(token);
         String message = postService.deletePost(postId, user.getId());
         MessageResponse res = new MessageResponse(message);
-
         return new ResponseEntity<MessageResponse>(res, HttpStatus.ACCEPTED);
     }
 

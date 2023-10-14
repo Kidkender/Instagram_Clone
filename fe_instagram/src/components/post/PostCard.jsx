@@ -11,7 +11,7 @@ import { FaRegComment } from "react-icons/fa";
 import { RiSendPlaneLine } from "react-icons/ri";
 import CommentModal from "../comment/CommentModal";
 import "./PostCard.css";
-const PostCard = () => {
+const PostCard = ({ post }) => {
   const [showDropdown, setShowDropdown] = useState(false);
   const [isPostLiked, setIsPostLiked] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
@@ -60,10 +60,7 @@ const PostCard = () => {
           </div>
         </div>
         <div className="w-full">
-          <img
-            src="https://cdn.pixabay.com/photo/2023/08/15/17/25/fall-8192375_1280.png"
-            alt=""
-          />
+          <img src={post?.image} alt="" className="w-full" />
         </div>
         <div className="flex justify-between items-center w-full px-5 py-4">
           <div className="flex items-center space-x-2">

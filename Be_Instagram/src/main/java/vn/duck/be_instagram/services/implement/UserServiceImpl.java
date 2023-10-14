@@ -63,7 +63,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserProfile(String token) throws UserException {
-        // TODO Auto-generated method stub
 
         token = token.substring(7);
 
@@ -102,11 +101,11 @@ public class UserServiceImpl implements UserService {
         follower.setUsername(reqUser.getUserName());
 
         UserDto following = new UserDto();
-        following.setUsername(follower.getUsername());
-        following.setId(follower.getId());
-        following.setName(follower.getName());
-        following.setUserImage(follower.getUserImage());
-        following.setEmail(follower.getEmail());
+        following.setUsername(followUser.getUserName());
+        following.setId(followUser.getId());
+        following.setName(followUser.getName());
+        following.setUserImage(followUser.getImage());
+        following.setEmail(followUser.getEmail());
 
         reqUser.getFollowing().add(following);
         followUser.getFollower().add(follower);
@@ -129,11 +128,11 @@ public class UserServiceImpl implements UserService {
         follower.setUsername(reqUser.getUserName());
 
         UserDto following = new UserDto();
-        following.setUsername(follower.getUsername());
-        following.setId(follower.getId());
-        following.setName(follower.getName());
-        following.setUserImage(follower.getUserImage());
-        following.setEmail(follower.getEmail());
+        following.setUsername(followUser.getUserName());
+        following.setId(followUser.getId());
+        following.setName(followUser.getName());
+        following.setUserImage(followUser.getImage());
+        following.setEmail(followUser.getEmail());
 
         reqUser.getFollowing().remove(following);
         followUser.getFollower().remove(follower);
