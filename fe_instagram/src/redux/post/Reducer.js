@@ -15,8 +15,8 @@ const initialValue = {
   deletedPost: null,
   likedPost: null,
   unlikedPost: null,
-  savedPost: null,
-  unsavedPost: null,
+  savedPost: [],
+  unsavedPost: [],
   singlePost: null,
 };
 

@@ -19,6 +19,7 @@ const Router = () => {
               <Route path="/" element={<HomePage />}></Route>
               <Route path="/username" element={<ProfilePage />} />
               <Route path="/story" element={<StoryPage />} />
+              <Route path="/comment/:postId" element={<HomePage />} />
             </Routes>
           </div>
         </div>

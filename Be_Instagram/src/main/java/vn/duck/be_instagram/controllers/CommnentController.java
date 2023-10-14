@@ -31,6 +31,14 @@ public class CommnentController {
         return new ResponseEntity<Comment>(createComment, HttpStatus.CREATED);
     }
 
+    @GetMapping("/{commentId}")
+    public ResponseEntity<Comment> findCommentById(@RequestHeader(
+            "Authorization") String token,
+                                                    @PathVariable Long commentId) throws CommentException {
+        Comment comment=commentService.findCommentById(commentId);
+                return new ResponseEntity<Comment>(comment,HttpStatus.OK);
+    }
+
     @PutMapping("/like/{commentId}")
     public ResponseEntity<Comment> likeCommentHandler(@RequestHeader(
             "Authorization") String token, @PathVariable Long commentId) throws UserException, CommentException {

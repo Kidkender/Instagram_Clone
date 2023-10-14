@@ -14,30 +14,25 @@ const initialValue = {
   findUserByUserIds: [],
   followUser: null,
   unfollowUser: null,
-  searchUser: null,
+  searchUser: [],
   updateUser: null,
 };
 
 export const UserReducer = (store = initialValue, { type, payload }) => {
   if (type === REQ_USER) {
+    console.log("-----req_user redux----", payload);
     return { ...store, reqUser: payload };
-  }
-  if (type === GET_USER_BY_USERNAME) {
-    return { ...store, findUserByUsername: payload };
-  }
-  if (type === GET_USERS_BY_USER_IDS) {
-    return { ...store, findUserByUserIds: payload };
-  }
-  if (type === FOLLOW_USER) {
+  } else if (type === GET_USER_BY_USERNAME) {
+    return { ...store, findByUsername: payload };
+  } else if (type === GET_USERS_BY_USER_IDS) {
+    return { ...store, findUsersByUserIds: payload };
+  } else if (type === FOLLOW_USER) {
     return { ...store, followUser: payload };
-  }
-  if (type === UNFOLLOW_USER) {
+  } else if (type === UNFOLLOW_USER) {
     return { ...store, unfollowUser: payload };
-  }
-  if (type === SEARCH_USER) {
+  } else if (type === SEARCH_USER) {
     return { ...store, searchUser: payload };
-  }
-  if (type === UPDATE_USER) {
+  } else if (type === UPDATE_USER) {
     return { ...store, updateUser: payload };
   }
   return store;

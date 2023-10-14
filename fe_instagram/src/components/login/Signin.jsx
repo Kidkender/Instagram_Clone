@@ -4,6 +4,7 @@ import {
   FormControl,
   FormErrorMessage,
   Input,
+  useToast,
 } from "@chakra-ui/react";
 import { Field, Form, Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,33 +22,41 @@ const validationSchema = Yup.object().shape({
     .min(8, "Password must be at least 8 characters")
     .required("Password is required"),
 });
+
 const Signin = () => {
-  const initalValues = { email: "", password: "" };
+  const initialValues = { email: "", password: "" };
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user } = useSelector((store) => store);
-  console.log("user current :", user);
+  const toast = useToast();
+
+  const { user, signin } = useSelector((store) => store);
   const jwt = localStorage.getItem("token");
 
+  useEffect(() => {
+    if (jwt) dispatch(getUserProfileAction(jwt || signin));
+  }, [jwt, signin]);
+
+  console.log("data in store login", user);
+
+  useEffect(() => {
+    if (user.reqUser?.userName && jwt) {
+      // navigate(`/${user.reqUser.userName}`);
+      navigate("/");
+      toast({
+        title: "Login successfully...",
+        status: "success",
+        duration: 5000,
+        position: "top-right",
+        isClosable: true,
+      });
+    }
+  }, [user.reqUser]);
+
+  const handleNavigate = () => navigate("/singup");
   const handleSubmit = (values, action) => {
     dispatch(signinAction(values));
     action.setSubmitting(false);
   };
-
-  useEffect(() => {
-    if (jwt) {
-      dispatch(getUserProfileAction(jwt));
-    }
-  }, [dispatch, jwt]);
-
-  useEffect(() => {
-    console.log("data login : ", user);
-    if (user.reqUser?.data.userName) {
-      navigate(`/${user.reqUser.data.userName}`);
-    }
-  }, [jwt, navigate, user, user.reqUser]);
-
-  const handleNavigate = () => navigate("/singup");
   return (
     <div>
       <div className="border">
@@ -64,7 +73,7 @@ const Signin = () => {
           />
 
           <Formik
-            initialValues={initalValues}
+            initialValues={initialValues}
             onSubmit={handleSubmit}
             validationSchema={validationSchema}
           >

@@ -12,6 +12,7 @@ import vn.duck.be_instagram.services.PostService;
 import vn.duck.be_instagram.services.UserService;
 import vn.duck.be_instagram.services.dto.UserDto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +37,7 @@ public class PostServiceImpl implements PostService {
         userDto.setUsername(user.getUserName());
 
         post.setUser(userDto);
+        post.setCreatedAt(LocalDateTime.now());
         return postReposity.save(post);
     }
 
