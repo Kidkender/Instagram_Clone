@@ -5,15 +5,15 @@ import {
   ModalContent,
   ModalOverlay,
 } from "@chakra-ui/react";
+import PropTypes from "prop-types";
 import { useState } from "react";
 import { FaPhotoVideo } from "react-icons/fa";
-import "./CreatePostModal.css";
-import { GrEmoji } from "react-icons/gr";
 import { GoLocation } from "react-icons/go";
-import PropTypes from "prop-types";
+import { GrEmoji } from "react-icons/gr";
 import { useDispatch } from "react-redux";
-import { createPostAction } from "~/redux/post/Action";
 import { uploadToCloud } from "~/config/UploadToCloud";
+import { createPostAction } from "~/redux/post/Action";
+import "./CreatePostModal.css";
 
 const CreatePostModal = ({ onClose, isOpen }) => {
   const [isDragOver, setIsDragOver] = useState(false);
@@ -176,8 +176,8 @@ const CreatePostModal = ({ onClose, isOpen }) => {
   );
 };
 
-CreatePostModal.PropTypes = {
-  onClose: PropTypes.bool,
+CreatePostModal.propTypes = {
+  onClose: PropTypes.func,
   isOpen: PropTypes.bool,
 };
 

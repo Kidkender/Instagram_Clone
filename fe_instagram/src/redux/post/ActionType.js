@@ -7,3 +7,4 @@ export const SAVE_POST = "SAVE_POST";
 export const UNSAVE_POST = "UNSAVE_POST";
 export const REQ_USER_POST = "REQ_USER_POST";
 export const GET_SINGLE_POST = "GET_SINGLE_POST";
+export const GET_ALL_POST = "GET_ALL_POST";

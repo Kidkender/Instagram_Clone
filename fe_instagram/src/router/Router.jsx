@@ -1,4 +1,5 @@
 import { Route, Routes, useLocation } from "react-router-dom";
+import EditProfileDetail from "~/components/profile/EditProfile/EditProfileDetail";
 import Sidebar from "~/components/sidebar/Sidebar";
 import { HomePage, ProfilePage } from "~/pages";
 import Auth from "~/pages/auth/Auth";
@@ -17,8 +18,10 @@ const Router = () => {
           <div className="w-full">
             <Routes>
               <Route path="/" element={<HomePage />}></Route>
-              <Route path="/username" element={<ProfilePage />} />
-              <Route path="/story" element={<StoryPage />} />
+              <Route path="/:username" element={<ProfilePage />} />
+              <Route path="/story/:userId" element={<StoryPage />} />
+              <Route path="/comment/:postId" element={<HomePage />} />
+              <Route path="/account/edit" element={<EditProfileDetail />} />
             </Routes>
           </div>
         </div>

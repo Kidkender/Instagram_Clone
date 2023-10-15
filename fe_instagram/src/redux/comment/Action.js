@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
   CREATE_COMMENT,
   GET_POST_COMMNENT,
@@ -5,19 +6,23 @@ import {
   UNLIKE_COMMENT,
 } from "./ActionType";
 
-import axios from "axios";
-
-const url = import.meta.env.BACKEND_URL_API_COMMENT;
+const url = "http://localhost:8181/api/v1/comment";
 
 export const createCommnent = (data) => async (dispatch) => {
+  // console.log("data in fetch", data);
   try {
-    const res = await axios.post(`${url}/${data.postId}`, data, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + data.jwt,
-      },
-    });
-    const comment = res.data;
+    const res = await fetch(
+      `http://localhost:8181/api/v1/comment/create/${data.postId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + data.jwt,
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    const comment = await res.json();
     console.log("Created comment ", comment);
     dispatch({ type: CREATE_COMMENT, payload: comment });
   } catch (error) {
@@ -27,13 +32,14 @@ export const createCommnent = (data) => async (dispatch) => {
 
 export const findPostCommnent = (data) => async (dispatch) => {
   try {
-    const res = await axios.get(`${url}/${data.postId}`, {
+    const res = await fetch(`${url}/${data.postId}`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + data.jwt,
       },
     });
-    const comment = res.data;
+    const comment = await res.json();
     console.log("find comment ", comment);
     dispatch({ type: GET_POST_COMMNENT, payload: comment });
   } catch (error) {
@@ -43,13 +49,14 @@ export const findPostCommnent = (data) => async (dispatch) => {
 
 export const likeComment = (data) => async (dispatch) => {
   try {
-    const res = await axios.put(`${url}/like/${data.postId}`, {
+    const res = await fetch(`${url}/like/${data.commentId}`, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + data.jwt,
       },
     });
-    const comment = res.data;
+    const comment = await res.json();
     console.log("Liked commnent ", comment);
     dispatch({ type: LIKE_COMMENT, payload: comment });
   } catch (error) {
@@ -59,13 +66,14 @@ export const likeComment = (data) => async (dispatch) => {
 
 export const unlikeComment = (data) => async (dispatch) => {
   try {
-    const res = await axios.put(`${url}/unlike/${data.postId}`, {
+    const res = await fetch(`${url}/unlike/${data.commentId}`, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + data.jwt,
       },
     });
-    const comment = res.data;
+    const comment = await res.json();
     console.log("unlike comment ", comment);
     dispatch({ type: UNLIKE_COMMENT, payload: comment });
   } catch (error) {

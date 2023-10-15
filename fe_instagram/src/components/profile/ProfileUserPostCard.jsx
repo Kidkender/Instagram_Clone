@@ -1,24 +1,21 @@
 import { AiFillHeart } from "react-icons/ai";
 import "./ProfileUserPostCard.css";
 import { FaComment } from "react-icons/fa";
+import PropTypes from "prop-types";
 
-const ProfileUserPostCard = () => {
+const ProfileUserPostCard = ({ post }) => {
   return (
     <div className="p-2">
       <div className="post w-60 h-60">
-        <img
-          src="https://cdn.pixabay.com/photo/2023/03/28/07/51/trees-7882545_1280.jpg"
-          className="cursor-pointer"
-          alt=""
-        />
+        <img src={post?.image} className="cursor-pointer" alt="" />
         <div className="overlay">
           <div className="overlay-text flex justify-between">
             <div>
-              <AiFillHeart /> <span>10</span>
+              <AiFillHeart /> <span>{post?.likedByUsers?.length}</span>
             </div>
             <div>
               <FaComment />
-              <span>30</span>
+              <span>{post?.comments?.length}</span>
             </div>
           </div>
         </div>
@@ -26,5 +23,7 @@ const ProfileUserPostCard = () => {
     </div>
   );
 };
+
+ProfileUserPostCard.propTypes = { post: PropTypes.object };
 
 export default ProfileUserPostCard;

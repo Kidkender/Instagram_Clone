@@ -1,16 +1,22 @@
 import { Modal, ModalBody, ModalContent, ModalOverlay } from "@chakra-ui/react";
 
 import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import {
   BsBookmark,
   BsBookmarkFill,
   BsEmojiSmile,
   BsThreeDots,
 } from "react-icons/bs";
-import CommentCard from "./CommentCard";
-import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { FaRegComment } from "react-icons/fa";
 import { RiSendPlaneLine } from "react-icons/ri";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { timeDifference } from "~/config/logic";
+import { createCommnent } from "~/redux/comment/Action";
+import { findPostById } from "~/redux/post/Action";
+import CommentCard from "./CommentCard";
 import "./CommentModal.css";
 
 const CommentModal = ({
@@ -21,6 +27,26 @@ const CommentModal = ({
   isPostLiked,
   isSaved,
 }) => {
+  const [commentContent, setCommentContent] = useState();
+
+  const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
+  const { postId } = useParams();
+  const comment = useSelector((store) => store.comment);
+  const post = useSelector((store) => store.post);
+
+  // console.log("post ", post);
+  useEffect(() => {
+    const data = { jwt: token, postId };
+
+    if (postId) {
+      // dispatch(findPostCommnent(data));
+      dispatch(findPostById(data));
+    }
+  }, [comment.createdComment, postId, comment.likeComment]);
+
+  const timeCreated = timeDifference(post.singlePost?.createdAt);
+
   return (
     <div>
       <Modal size={"4xl"} onClose={onClose} isOpen={isOpen} isCentered>
@@ -32,7 +58,7 @@ const CommentModal = ({
                 <img
                   className="max-h-full w-full"
                   alt=""
-                  src="https://images.pexels.com/photos/17893929/pexels-photo-17893929/free-photo-of-food-fishing-light-black-and-white.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                  src={post.singlePost?.image}
                 />
               </div>
               <div className="w-[55%] pl-10 relative">
@@ -46,16 +72,16 @@ const CommentModal = ({
                       />
                     </div>
                     <div className="ml-2">
-                      <p>username</p>
+                      <p>{post.singlePost?.user?.username}</p>
                     </div>
                   </div>
                   <BsThreeDots />
                 </div>
-
                 <hr />
+                {/* <p className="text-sm font-sans">{post.singlePost?.caption}</p> */}
                 <div className="comment">
-                  {[1, 1, 1, 1, 1, 1, 1, 1, 1].map((item, index) => (
-                    <CommentCard key={index} />
+                  {post.singlePost?.comments?.map((item, index) => (
+                    <CommentCard key={index} comment={item} />
                   ))}
                 </div>
 
@@ -92,8 +118,10 @@ const CommentModal = ({
                     </div>
                   </div>
                   <div className="w-full py-2 ">
-                    <p>10 likes</p>
-                    <p className="opacity-50 text-sm">1 minute ago</p>
+                    {post.singlePost?.likedByUsers.length > 0 && (
+                      <p>{post.singlePost?.likedByUsers?.length} like</p>
+                    )}
+                    <p className="opacity-50 text-sm">{timeCreated}</p>
                   </div>
 
                   <div className="flex  items-center w-full   ">
@@ -102,6 +130,19 @@ const CommentModal = ({
                       type="text"
                       className="commnetInput"
                       placeholder="Add a comment..."
+                      onChange={(e) => setCommentContent(e.target.value)}
+                      value={commentContent}
+                      onKeyPress={(e) => {
+                        if (e.key === "Enter") {
+                          const data = {
+                            postId,
+                            jwt: token,
+                            content: commentContent,
+                          };
+                          dispatch(createCommnent(data));
+                          setCommentContent("");
+                        }
+                      }}
                     />
                   </div>
                 </div>

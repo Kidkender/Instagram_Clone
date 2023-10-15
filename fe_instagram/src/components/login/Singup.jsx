@@ -29,20 +29,21 @@ const Singup = () => {
   const toast = useToast();
   const handleNavigate = () => navigate("/login");
   const dispatch = useDispatch();
-  const { auth } = useSelector((store) => store);
+  // const { auth } = useSelector((store) => store);
+  const auth = useSelector((store) => store.auth);
 
-  console.log("Store signup ", auth.signup);
+  // console.log("Store signup ", auth.signup);
 
   const handleSubmit = (values, actions) => {
-    console.log("values Submit ", values);
+    // console.log("values Submit ", values);
     dispatch(signupAction(values));
     actions.setSubmitting(false);
   };
 
-  console.log("signup ", auth);
+  // console.log("signup ", auth);
 
   useEffect(() => {
-    console.log("data input ", auth.signup?.userName);
+    // console.log("data input ", auth.signup?.userName);
     if (auth.signup?.userName) {
       navigate("/login");
       toast({
