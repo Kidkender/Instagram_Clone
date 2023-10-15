@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 
-const StoryCircle = () => {
+const StoryCircle = ({ user }) => {
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    navigate("/story");
+    navigate(`/story/${user.id}`);
   };
 
   return (
@@ -13,10 +13,13 @@ const StoryCircle = () => {
       className="cursor-pointer flex flex-col items-center"
     >
       <img
-        src="https://cdn.pixabay.com/photo/2023/08/30/13/13/el-chalten-8223303_1280.jpg"
+        src={
+          user.image ||
+          "https://toppng.com/uploads/preview/instagram-default-profile-picture-11562973083brycehrmyv.png"
+        }
         className="w-16 h-16 rounded-full"
       />
-      <p>username</p>
+      <p>{user.userName}</p>
     </div>
   );
 };

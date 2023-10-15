@@ -49,14 +49,14 @@ export const findPostCommnent = (data) => async (dispatch) => {
 
 export const likeComment = (data) => async (dispatch) => {
   try {
-    const res = await fetch(`${url}/like/${data.postId}`, {
+    const res = await fetch(`${url}/like/${data.commentId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + data.jwt,
       },
     });
-    const comment = res.data;
+    const comment = await res.json();
     console.log("Liked commnent ", comment);
     dispatch({ type: LIKE_COMMENT, payload: comment });
   } catch (error) {
@@ -66,14 +66,14 @@ export const likeComment = (data) => async (dispatch) => {
 
 export const unlikeComment = (data) => async (dispatch) => {
   try {
-    const res = await fetch(`${url}/unlike/${data.postId}`, {
+    const res = await fetch(`${url}/unlike/${data.commentId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         Authorization: "Bearer " + data.jwt,
       },
     });
-    const comment = res.data;
+    const comment = await res.json();
     console.log("unlike comment ", comment);
     dispatch({ type: UNLIKE_COMMENT, payload: comment });
   } catch (error) {

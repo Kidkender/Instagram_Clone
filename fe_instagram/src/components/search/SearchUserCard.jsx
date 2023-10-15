@@ -1,19 +1,30 @@
-const SearchUserCard = () => {
+import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
+const SearchUserCard = ({ user }) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="py-2 cursor-pointer">
+    <div onClick={navigate(`${user.userName}`)} className="py-2 cursor-pointer">
       <div className="flex items-center">
         <img
-          src="https://images.pexels.com/photos/5850083/pexels-photo-5850083.jpeg?auto=compress&cs=tinysrgb&w=600"
+          src={
+            user.image ||
+            "https://toppng.com/uploads/preview/instagram-default-profile-picture-11562973083brycehrmyv.png"
+          }
           alt=""
           className="w-10 h-10 rounded-full"
         />
         <div className="ml-3">
-          <p>Full name</p>
-          <p className="opacity-70">username</p>
+          <p>{user.name}</p>
+          <p className="opacity-70">{user.userName}</p>
         </div>
       </div>
     </div>
   );
+};
+
+SearchUserCard.propTypes = {
+  user: PropTypes.object,
 };
 
 export default SearchUserCard;

@@ -9,7 +9,7 @@ const isPostLikedByUser = (post, userId) => {
 
 const isCommentLikedByUser = (comment, userId) => {
   for (let item of comment.likedByUsers) {
-    if (item.userId === userId) return true;
+    if (item.id === userId) return true;
   }
   return false;
 };
@@ -23,6 +23,10 @@ const isSavedPost = (user, postId) => {
   return false;
 };
 
+const isReqUser = (userId1, userId2) => {
+  if (userId1 && userId2) return userId1 === userId2;
+};
+
 const isFollowing = (reqUser, user) => {
   if (reqUser && user) {
     for (let item of user.follower) {
@@ -32,6 +36,15 @@ const isFollowing = (reqUser, user) => {
     }
   }
   return false;
+};
+
+export const suggetions = (reqUser) => {
+  const set = new Set(reqUser.following.map((item) => JSON.stringify(item)));
+  const result = reqUser.follower.filter((item) => {
+    return !set.has(JSON.stringify(item));
+  });
+
+  return result;
 };
 
 const timeDifference = (timestamp) => {
@@ -67,10 +80,42 @@ const timeDifference = (timestamp) => {
   }
 };
 
+export const hasStory = (users) => {
+  const temp = users.reduce((acc, user) => {
+    if (user.stories?.length > 0) {
+      const time = getTimeInHours(
+        user.stories[user.stories.length - 1].timestamp
+      );
+      if (time < 24) {
+        acc.push(user);
+      }
+    }
+    return acc;
+  }, []);
+
+  return temp;
+};
+function getTimeInHours(timestamp) {
+  const date = new Date(timestamp);
+  const hours = date.getHours();
+  return hours;
+}
+export const activeStory = (stories) => {
+  const temp = stories.reduce((acc, item) => {
+    const time = getTimeInHours(item.timestamp);
+    if (time < 24) {
+      acc.push(item);
+    }
+    return acc;
+  }, []);
+  return temp;
+};
+
 export {
   timeDifference,
   isFollowing,
   isSavedPost,
   isCommentLikedByUser,
   isPostLikedByUser,
+  isReqUser,
 };

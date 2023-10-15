@@ -1,9 +1,11 @@
 import {
   CREATE_NEW_POST,
   DELETE_POST,
+  GET_ALL_POST,
   GET_SINGLE_POST,
   GET_USER_POST,
   LIKE_POST,
+  REQ_USER_POST,
   SAVE_POST,
   UNLIKE_POST,
   UNSAVE_POST,
@@ -12,22 +14,6 @@ import {
 const url = "http://localhost:8181/api/v1/post";
 
 export const createPostAction = (data) => async (dispatch) => {
-  // try {
-  //   const res = await axios.post(`${url}/create`, data.data, {
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: "Bearer " + data.jwt,
-  //     },
-  //   });
-
-  //   const post = await res.data;
-  //   console.log("find post by user ids ", post);
-
-  //   dispatch({ type: CREATE_NEW_POST, payload: post });
-  // } catch (error) {
-  //   console.log("catch error ", error);
-  // }
-
   try {
     const res = await fetch(`${url}/create`, {
       method: "POST",
@@ -41,7 +27,9 @@ export const createPostAction = (data) => async (dispatch) => {
     const createdPost = await res.json();
     console.log("createdPost", createdPost);
     dispatch({ type: CREATE_NEW_POST, payload: createdPost });
-  } catch (error) {}
+  } catch (error) {
+    console.error("error ", error);
+  }
 };
 
 export const findUserPostAction = (data) => async (dispatch) => {
@@ -61,6 +49,42 @@ export const findUserPostAction = (data) => async (dispatch) => {
     dispatch({ type: GET_USER_POST, payload: posts });
   } catch (error) {
     console.log("catch error :", error);
+  }
+};
+
+export const reqUserPostAction = (data) => async (dispatch) => {
+  try {
+    const res = await fetch(`${url}/following/${data.userId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + data.jwt,
+      },
+    });
+
+    const posts = await res.json();
+    console.log("find posts by user id ", posts);
+
+    dispatch({ type: REQ_USER_POST, payload: posts });
+  } catch (error) {
+    console.log("catch error ", error);
+  }
+};
+export const getAllPostOfUser = (data) => async (dispatch) => {
+  try {
+    const res = await fetch(`${url}/all/${data.userId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + data.jwt,
+      },
+    });
+
+    const posts = await res.json();
+    console.log("All post of user ", posts);
+    dispatch({ type: GET_ALL_POST, payload: posts });
+  } catch (error) {
+    console.log(error);
   }
 };
 

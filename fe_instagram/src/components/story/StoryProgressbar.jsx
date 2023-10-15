@@ -21,7 +21,7 @@ const StoryProgressbar = ({ index, activeIndex, duration }) => {
     };
   }, [duration, activeIndex]);
 
-  console.log("percen:", progress);
+  // console.log("percen:", progress);
   useEffect(() => {
     setProgress(0);
   }, [activeIndex]);

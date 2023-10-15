@@ -1,15 +1,38 @@
-import { useState } from "react";
-import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
-import { timeDifference } from "~/config/logic";
 import PropTypes from "prop-types";
-import { comment } from "postcss";
+import { useEffect, useState } from "react";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
+import { isCommentLikedByUser, timeDifference } from "~/config/logic";
+import { likeComment, unlikeComment } from "~/redux/comment/Action";
 const CommentCard = ({ comment }) => {
-  const [isCommentLiked, setisCommentLiked] = useState();
+  const [isCommentLiked, setisCommentLiked] = useState(false);
+  const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
+  const user = useSelector((store) => store.user);
+  const data = {
+    commentId: comment.id,
+    jwt: token,
+  };
   const handleLikeComment = () => {
-    setisCommentLiked(!isCommentLiked);
+    setisCommentLiked(true);
+    // console.log("liike comment");
+    dispatch(likeComment(data));
   };
 
+  const handleUnLikeComment = () => {
+    // console.log("Unlike Comment");
+    setisCommentLiked(false);
+    dispatch(unlikeComment(data));
+  };
   const createdTime = timeDifference(comment?.createdAt);
+
+  useEffect(() => {
+    // console.log(
+    //   "is Comment Like ",
+    //   isCommentLikedByUser(comment, user.reqUser.id)
+    // );
+    setisCommentLiked(isCommentLikedByUser(comment, user.reqUser?.id));
+  }, [user.reqUser, comment]);
 
   return (
     <div>
@@ -42,7 +65,7 @@ const CommentCard = ({ comment }) => {
 
         {isCommentLiked ? (
           <AiFillHeart
-            onClick={handleLikeComment}
+            onClick={handleUnLikeComment}
             className="mr-4 text-xs hover:opacity-50 cursor-pointer text-red-600"
           />
         ) : (

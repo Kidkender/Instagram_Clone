@@ -1,6 +1,7 @@
 import {
   CREATE_NEW_POST,
   DELETE_POST,
+  GET_ALL_POST,
   GET_SINGLE_POST,
   GET_USER_POST,
   LIKE_POST,
@@ -18,6 +19,7 @@ const initialValue = {
   savedPost: [],
   unsavedPost: [],
   singlePost: null,
+  allPostUser: [],
 };
 
 export const PostReducer = (store = initialValue, { type, payload }) => {
@@ -37,6 +39,8 @@ export const PostReducer = (store = initialValue, { type, payload }) => {
     return { ...store, unsavedPost: payload };
   } else if (type === GET_SINGLE_POST) {
     return { ...store, singlePost: payload };
+  } else if (type === GET_ALL_POST) {
+    return { ...store, allPostUser: payload };
   }
   return store;
 };

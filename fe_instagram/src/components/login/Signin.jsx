@@ -29,19 +29,19 @@ const Signin = () => {
   const dispatch = useDispatch();
   const toast = useToast();
 
-  const { user, signin } = useSelector((store) => store);
+  // const { user, signin } = useSelector((store) => store);
+  const user = useSelector((store) => store.user);
+  const signin = useSelector((store) => store.signin);
   const jwt = localStorage.getItem("token");
 
   useEffect(() => {
     if (jwt) dispatch(getUserProfileAction(jwt || signin));
   }, [jwt, signin]);
 
-  console.log("data in store login", user);
-
   useEffect(() => {
-    if (user.reqUser?.userName && jwt) {
-      // navigate(`/${user.reqUser.userName}`);
-      navigate("/");
+    if (user?.reqUser?.userName && jwt) {
+      navigate(`/${user.reqUser?.userName}`);
+      // navigate("/");
       toast({
         title: "Login successfully...",
         status: "success",
@@ -83,6 +83,7 @@ const Signin = () => {
                   {({ field, form }) => (
                     <FormControl
                       isInvalid={form.errors.email && form.touched.email}
+                      mb={4}
                     >
                       <Input
                         className="w-full"
@@ -90,7 +91,7 @@ const Signin = () => {
                         id="email"
                         placeholder="Mobile Number or Email"
                       ></Input>
-                      <FormErrorMessage>{form.errors.email}</FormErrorMessage>
+                      <FormErrorMessage>{form.errors.email} </FormErrorMessage>
                     </FormControl>
                   )}
                 </Field>

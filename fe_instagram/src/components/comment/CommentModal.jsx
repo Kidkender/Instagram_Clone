@@ -1,23 +1,23 @@
 import { Modal, ModalBody, ModalContent, ModalOverlay } from "@chakra-ui/react";
 
 import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
+import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import {
   BsBookmark,
   BsBookmarkFill,
   BsEmojiSmile,
   BsThreeDots,
 } from "react-icons/bs";
-import CommentCard from "./CommentCard";
-import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { FaRegComment } from "react-icons/fa";
 import { RiSendPlaneLine } from "react-icons/ri";
-import "./CommentModal.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { createCommnent, findPostCommnent } from "~/redux/comment/Action";
-import { findPostById } from "~/redux/post/Action";
 import { timeDifference } from "~/config/logic";
+import { createCommnent } from "~/redux/comment/Action";
+import { findPostById } from "~/redux/post/Action";
+import CommentCard from "./CommentCard";
+import "./CommentModal.css";
 
 const CommentModal = ({
   handlePostLike,
@@ -35,7 +35,7 @@ const CommentModal = ({
   const comment = useSelector((store) => store.comment);
   const post = useSelector((store) => store.post);
 
-  console.log("post ", post);
+  // console.log("post ", post);
   useEffect(() => {
     const data = { jwt: token, postId };
 
@@ -43,7 +43,7 @@ const CommentModal = ({
       // dispatch(findPostCommnent(data));
       dispatch(findPostById(data));
     }
-  }, [comment.createdComment, postId]);
+  }, [comment.createdComment, postId, comment.likeComment]);
 
   const timeCreated = timeDifference(post.singlePost?.createdAt);
 
